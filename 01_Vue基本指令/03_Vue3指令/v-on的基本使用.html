@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .area  {
+      width: 200px;
+      height: 200px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+  </div>   
+
+  <template id="my-app">
+    <button v-on:click="btnClick">按钮1</button>
+    <div class="area" v-on:mousemove="mouseMove">div</div>
+
+    <button @click="btnClick">按钮1</button>
+    <div class="area" @mousemove="mouseMove">div</div>
+    <button @click="counter++">{{counter}}</button>
+
+    <div class="area" v-on="{click: btnClick, mousemove: mouseMove}"></div>
+    <div class="area" @="{click: btnClick, mousemove: mouseMove}"></div>
+  </template>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const App = {
+      template: '#my-app',
+      data() {
+        return {
+          message: 'Hello World',
+          counter: 100,
+        }
+      },
+      methods: {
+        btnClick() {
+          console.log("按钮一点击");
+        },
+        mouseMove() {
+          console.log("鼠标移动");
+        }
+      }
+    }
+
+    Vue.createApp(App).mount("#app");
+  </script>
+</body>
+</html>
