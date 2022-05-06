@@ -1,12 +1,25 @@
 <template>
   <div>
-
+    <button @click="getParentAndRoot">获取父组件和根组件</button>
   </div>
 </template>
 
 <script>
   export default {
-    
+    data() {
+      return {
+        message: "我是NavBar中的message"
+      }
+    },
+    methods: {
+      sayHello() {
+        console.log("我是NavBar中的sayHello")
+      },
+      getParentAndRoot() {
+        console.log(this.$parent)
+        console.log(this.$root)
+      }
+    }
   }
 </script>
 
