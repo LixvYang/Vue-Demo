@@ -29,14 +29,14 @@ const routes = [
       },
       {
         // path 不可以加  /
-        path: "message",
+        path: 'message',
         component: () => import('../pages/HomeMessage.vue'),
       },
       {
-        path: "shops", 
-        component: () => import('../pages/HomeShops.vue')
-      }
-    ]
+        path: 'shops',
+        component: () => import('../pages/HomeShops.vue'),
+      },
+    ],
   },
   {
     path: '/about',
@@ -46,16 +46,20 @@ const routes = [
     },
   },
   {
-    path: "/user/:username/id/:id",
-    name: "user",
-    component: () => {
-      return import(/* webpackChunkName: "user-chunk" */ '../pages/User.vue')
-    }
+    path: '/login',
+    component: () => import('../pages/Login.vue')
   },
   {
-    path: "/:pathMatch(.*)",
-    component: () => import('../pages/NotFound.vue')
-  }
+    path: '/user/:username/id/:id',
+    name: 'user',
+    component: () => {
+      return import(/* webpackChunkName: "user-chunk" */ '../pages/User.vue')
+    },
+  },
+  {
+    path: '/:pathMatch(.*)',
+    component: () => import('../pages/NotFound.vue'),
+  },
 ]
 
 // 创建路由对象router
@@ -63,6 +67,34 @@ const routes = [
 const router = createRouter({
   routes,
   history: createWebHistory(),
+})
+
+// 动态添加路由
+const categoryRoute = {
+  path: '/category',
+  component: () => import('../pages/Category.vue'),
+}
+
+// 添加
+router.addRoute(categoryRoute)
+
+// 添加二级路由对象
+router.addRoute('home', {
+  path: 'moment',
+  component: () => import('../pages/HomeMoment.vue'),
+})
+
+// 导航守卫
+/**
+ * 1. false 不会导航
+ * 2. undfined 或者不写返回值： 进行默认导航
+ * 3. 字符串
+ */
+router.beforeEach((to) => {
+  console.log('进行了${++counter}路由跳转')
+  if (to.path.indexOf("/home") !== -1) {
+    return "/login"
+  }
 })
 
 export default router
