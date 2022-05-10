@@ -10,4 +10,5 @@ export interface HYRequestInterceptors {
 
 export interface HYRequestConfig extends AxiosRequestConfig {
   interceptors?: HYRequestInterceptors
+  showLoading?: boolean
 }
