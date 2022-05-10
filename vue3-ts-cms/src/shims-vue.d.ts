@@ -6,4 +6,3 @@ declare module '*.vue' {
 }
 
 declare let $store: any
-
