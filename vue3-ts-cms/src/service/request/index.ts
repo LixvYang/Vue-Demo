@@ -72,29 +72,49 @@ class HYRequest {
     )
   }
 
-  request(config: HYRequestConfig): void {
-    if (config.interceptors?.requestIntereptor) {
-      config = config.interceptors.requestIntereptor(config)
-    }
+  request<T>(config: HYRequestConfig): Promise<T> {
+    return new Promise((resolve) => {
+      // 1. 单个请求对请求config的处理
+      if (config.interceptors?.requestIntereptor) {
+        config = config.interceptors.requestIntereptor(config)
+      }
 
-    if (config.showLoading == true) {
-      this.loading = config.showLoading
-    }
+      // 2. 单个请求对请求config的处理
+      if (config.showLoading == true) {
+        this.loading = config.showLoading
+      }
 
-    this.instance
-      .request(config)
-      .then((res) => {
-        if (config.interceptors?.responseIntereptor) {
-          res = config.interceptors.responseIntereptor(res)
-        }
-        console.log(res)
+      // 2. 当前实例的请求
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          if (config.interceptors?.responseIntereptor) {
+            // res = config.interceptors.responseIntereptor(res)
+          }
+          console.log(res)
 
-        this.showLoading = DEFAULT_LOADING
-      })
-      .catch((err) => {
-        this.showLoading = DEFAULT_LOADING
-        return err
-      })
+          this.showLoading = DEFAULT_LOADING
+
+          resolve(res)
+        })
+        .catch((err) => {
+          this.showLoading = DEFAULT_LOADING
+          return err
+        })
+    })
+  }
+
+  get<T>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'GET' })
+  }
+  post<T>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'POST' })
+  }
+  delete<T>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELET' })
+  }
+  patch<T>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
 

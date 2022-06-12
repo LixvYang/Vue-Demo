@@ -32,8 +32,19 @@ console.log(process.env.VUE_APP_BASE_URL)
 //     }
 //   }
 // })
+interface DataType {
+  data: any
+  returnCode: string
+  success: boolean
+}
 
-hyRequest.request({
-  url: '/home/multidata',
-  method: 'GET'
-})
+hyRequest
+  .request<DataType>({
+    url: '/home/multidata',
+    method: 'GET'
+  })
+  .then((res) => {
+    console.log(res.data)
+    console.log(res.returnCode)
+    console.log(res.success)
+  })
